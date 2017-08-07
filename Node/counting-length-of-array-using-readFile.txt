@@ -1,0 +1,16 @@
+var fs = require('fs');
+function fileRead(callback){
+	fs.readFile(process.argv[2],function doneRead(err, data){
+		if (err) throw (err);
+		dataStr=data.toString();
+		dataArray=dataStr.split('\n');
+		fileLength=dataArray.length-1;
+		callback();
+	})
+}
+
+function printCount(){
+console.log(fileLength);
+}
+
+fileRead(printCount);

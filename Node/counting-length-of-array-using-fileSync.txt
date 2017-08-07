@@ -1,0 +1,6 @@
+var fs = require('fs');
+var tutFile=fs.readFileSync(process.argv[2]);
+var tutString=tutFile.toString();
+var tutArray=tutString.split('\n');
+var strLength=tutArray.length-1;
+console.log(strLength);

@@ -1,0 +1,23 @@
+http=require('http');
+siteInput=process.argv[2];
+dataArray=[];
+
+function getSite(callback){
+	http.get(siteInput, function (res){
+		res.setEncoding('utf8');
+		res.on('data', function(data){
+			dataArray=data.split('/n');
+			callback();
+		});
+		
+	});
+	
+}
+
+function printContent (){
+	for(i=0; i<dataArray.length; i++){	
+	console.log(dataArray[i]);
+	}	
+}
+
+getSite(printContent);

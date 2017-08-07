@@ -1,0 +1,65 @@
+<----------Without use of 3rd party module---------->
+var http=require('http');
+var inputArray=[];
+var count=0;
+
+function getSites(index){
+	http.get(process.argv[2 + index],function(res){
+		var chunks=[];
+		res.setEncoding('utf8');
+		res.on('data',function(data){
+		
+			chunks += data;
+
+		});
+		res.on('end',function(){
+			inputArray[index]=chunks;
+			count++;
+			if(count===3){
+				printResults();
+			}
+		});
+	});
+}	
+
+function printResults (){
+	for(i=0; i<inputArray.length; i++){
+		console.log(inputArray[i]);
+	};
+}
+
+for (i=0; i<3; i++){
+	getSites(i);
+}
+
+
+
+
+<-----------With use of 3rd party module---------->
+var http = require('http')
+var bl = require('bl')
+var results = []
+var count = 0
+
+function printResults () {
+  for (var i = 0; i < 3; i++)
+    console.log(results[i])
+}
+
+function httpGet (index) {
+  http.get(process.argv[2 + index], function (response) {
+    response.pipe(bl(function (err, data) {
+      if (err)
+        return console.error(err)
+
+      results[index] = data.toString()
+      count++
+
+      if (count == 3) // yay! we are the last one!
+        printResults()
+    }))
+  })
+}
+
+for (var i = 0; i < 3; i++)
+  httpGet(i)

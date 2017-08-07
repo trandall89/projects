@@ -1,0 +1,27 @@
+var fs = require('fs');
+var path = require('path');
+listArray=[];
+completedList=[];
+function listFilter(callback){
+	fs.readdir(process.argv[2],function readDone (err, list){
+		if (err) throw (err);
+		list.forEach(function(file){
+			listArray.push(file);
+		});
+		for(i=0; i<listArray.length; i++){
+			if (path.extname(listArray[i])==="." + process.argv[3]){
+			completedList.push(listArray[i]);	
+			}
+		}
+		callback();
+
+	})
+}
+
+function logList(){
+for(i=0; i<completedList.length; i++){
+	console.log(completedList[i]);
+	}
+}
+
+listFilter(logList)

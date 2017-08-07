@@ -1,0 +1,38 @@
+----------------------------------------Two ways----------------------------------------
+
+
+----------Way one----------
+var http = require('http');
+var port=process.argv[2];
+var fs=require('fs');
+
+var server= http.createServer(function(req,res){
+	var file=process.argv[3]+req.url;
+
+	var readStream = fs.createReadStream(file);
+
+	readStream.on('open', function(){
+		readStream.pipe(res);
+	});
+
+	readStream.on('error', function(err){
+		res.end(err);
+	});
+
+});
+
+server.listen(port);
+
+----------Way two----------
+
+
+var http = require('http');
+var port=process.argv[2];
+var fs=require('fs');
+
+var server= http.createServer(function(req,res){
+	res.writeHead(200, {'content-type':'text/plain'});
+	fs.createReadStream(process.argv[3]).pipe(res)
+});
+
+server.listen(port);
